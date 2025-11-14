@@ -49,8 +49,9 @@
   }).addTo(map);
 
   // Replace 'yourtrack.gpx' with the relative path to your local GPX file
-  new L.GPX('Bélesta - Cassagnes - Lansac - St Arnac - Ansignan - Caramany - Bélesta - Montalba.gpx', { async: true, markers: false,   marker_options: {
-    startIconUrl: null,  // disable start marker
+  new L.GPX('Bélesta - Cassagnes - Lansac - St Arnac - Ansignan - Caramany - Bélesta - Montalba.gpx',
+            { async: true,  marker_options: {
+    startIconUrl: 'Transact.png',  // disable start marker
     endIconUrl: null,    // disable end marker
     shadowUrl: null
   } }).on('loaded', function(e) {
