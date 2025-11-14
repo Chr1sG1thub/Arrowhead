@@ -30,7 +30,7 @@
     map.fitBounds(gpxLayer.getBounds());
 
     gpxLayer.eachLayer(layer => {
-      console.log(typeof layer, layer.getLatLngs().length);
+      console.log(typeof layer);
       if (layer instanceof L.Polyline) {
         L.polylineDecorator(layer, {
           patterns: [{
