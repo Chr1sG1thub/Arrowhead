@@ -50,7 +50,10 @@
 
   // Replace 'yourtrack.gpx' with the relative path to your local GPX file
   new L.GPX('Bélesta - Cassagnes - Lansac - St Arnac - Ansignan - Caramany - Bélesta - Montalba.gpx',
-            { async: true,  markers: false }).on('loaded', function(e) {
+            { async: true,   markers: {
+    startIcon: '',
+    endIcon: '',
+  } }).on('loaded', function(e) {
     const gpxLayer = e.target;
     map.fitBounds(gpxLayer.getBounds());
 
