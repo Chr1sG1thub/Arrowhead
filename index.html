@@ -18,6 +18,30 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.min.js"></script>
 
 <script>
+
+  function findPolylinesInGPXLayer(gpxLayer) {
+  let polylines = [];
+
+  // Iterate first-level sublayers
+  Object.values(gpxLayer._layers).forEach(firstLevelLayer => {
+    if (firstLevelLayer._layers) {
+      // It’s a nested LayerGroup: iterate inside
+      Object.values(firstLevelLayer._layers).forEach(secondLevelLayer => {
+        if (Array.isArray(secondLevelLayer._latlngs) && secondLevelLayer._latlngs.length > 1) {
+          polylines.push(secondLevelLayer);
+        }
+      });
+    } else {
+      // If no nested _layers, check if this layer itself has latlngs
+      if (Array.isArray(firstLevelLayer._latlngs) && firstLevelLayer._latlngs.length > 1) {
+        polylines.push(firstLevelLayer);
+      }
+    }
+  });
+
+  return polylines;
+}
+  
   const map = L.map('map').setView([43.6, 2], 10);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -29,17 +53,10 @@
     const gpxLayer = e.target;
     map.fitBounds(gpxLayer.getBounds());
 
-// Access the layers object
-const sublayers = Object.values(gpxLayer._layers[40]._layers);
-
-// Find the polyline based on latlngs length > 1
-const polylineLayer = sublayers.find(layer => Array.isArray(layer._latlngs) && layer._latlngs.length > 1);
-
-if (polylineLayer) {
-  console.log('Found polyline layer with points:', polylineLayer._latlngs.length);
-
-  // Add arrowheads
-  L.polylineDecorator(polylineLayer, {
+const polylines = findPolylinesInGPXLayer(gpxLayer);
+console.log('Found polylines:', polylines);
+polylines.forEach(polyline => {
+  L.polylineDecorator(polyline, {
     patterns: [{
       offset: '5%',
       repeat: '12%',
@@ -50,11 +67,7 @@ if (polylineLayer) {
       })
     }]
   }).addTo(map);
-
-} else {
-  console.error('No suitable polyline layer found!');
-} //if (polylineLayer)
-
+});
   }).addTo(map);
 </script>
 
