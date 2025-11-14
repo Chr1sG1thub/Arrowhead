@@ -57,15 +57,22 @@ const polylines = findPolylinesInGPXLayer(gpxLayer);
 console.log('Found polylines:', polylines);
 polylines.forEach(polyline => {
   L.polylineDecorator(polyline, {
-    patterns: [{
-      offset: '5%',
-      repeat: '10%',
-      symbol: L.Symbol.arrowHead({
-        pixelSize: 10,
-        polygon: true,
-        pathOptions: { color: 'blue', weight: 2 }
-      })
-    }]
+patterns: [{
+    offset: '5%',
+    repeat: '12%',
+    symbol: L.Symbol.arrowHead({
+      pixelSize: 12,
+      polygon: true,   // filled arrowhead
+      pathOptions: {
+        color: 'red',      // border color
+        weight: 2,         // border thickness
+        opacity: 1,        // border opacity
+        fill: true,        // enable fill
+        fillColor: 'red',  // fill color, usually same as border color
+        fillOpacity: 1     // fill opacity
+      }
+    })
+  }]
   }).addTo(map);
 });
   }).addTo(map);
