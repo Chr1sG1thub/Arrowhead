@@ -29,20 +29,31 @@
     const gpxLayer = e.target;
     map.fitBounds(gpxLayer.getBounds());
 
-    gpxLayer.eachLayer(layer => {
-      console.log(typeof layer);
-      if (layer instanceof L.Polyline) {
-        L.polylineDecorator(layer, {
-          patterns: [{
-            offset: '5%',
-            repeat: '12%',
-            symbol: L.Symbol.arrowHead({
-              pixelSize: 12,
-              polygon: true,
-              pathOptions: { color: 'red', weight: 2 }
-            })
-          }]
-        }).addTo(map);
+// Access the layers object
+const sublayers = Object.values(gpxLayer._layers);
+
+// Find the polyline based on latlngs length > 1
+const polylineLayer = sublayers.find(layer => Array.isArray(layer._latlngs) && layer._latlngs.length > 1);
+
+if (polylineLayer) {
+  console.log('Found polyline layer with points:', polylineLayer._latlngs.length);
+
+  // Add arrowheads
+  L.polylineDecorator(polylineLayer, {
+    patterns: [{
+      offset: '5%',
+      repeat: '12%',
+      symbol: L.Symbol.arrowHead({
+        pixelSize: 12,
+        polygon: true,
+        pathOptions: { color: 'red', weight: 2 }
+      })
+    }]
+  }).addTo(map);
+
+} else {
+  console.error('No suitable polyline layer found!');
+}
       }
     });
   }).addTo(map);
