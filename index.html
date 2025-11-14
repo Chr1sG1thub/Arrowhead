@@ -30,7 +30,7 @@
     map.fitBounds(gpxLayer.getBounds());
 
 // Access the layers object
-const sublayers = Object.values(gpxLayer._layers._layers);
+const sublayers = Object.values(gpxLayer._layers[40]._layers);
 
 // Find the polyline based on latlngs length > 1
 const polylineLayer = sublayers.find(layer => Array.isArray(layer._latlngs) && layer._latlngs.length > 1);
